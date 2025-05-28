@@ -200,12 +200,9 @@ class OffboardControl(Node):
         msg.yaw = yaw
         
         F_ned = np.array([0.0, 0.0, Fz],dtype=np.float32)
-
         r = R.from_quat([quat[1], quat[2], quat[3], quat[0]])
         R_BI = r.as_matrix().T
         msg.thrust_body = (R_BI @ F_ned).astype(np.float32)
-        Thrust = (R_BI @ F_ned).astype(np.float32)
-        print("AAAA",Thrust)
         self.omega_setpoint_publisher.publish(msg)
 
     def publish_vehicle_command(self, command, **params) -> None:
@@ -280,8 +277,7 @@ class OffboardControl(Node):
             # self.publish_thrust_setpoint(0.0, 0.0, self.Fz_ref)
             # self.publish_torque_setpoint(0.0, 0.0, 0.0)
             self.publish_rates_setpoint(roll, pitch, yaw, self.Fz_ref, self.q)
-            print("BBB",self.Fz_ref)
-
+            print("THRUST", self.Fz_ref)
             #self.publish_torque_setpoint(Tx, Ty, Tz)
             #self.get_logger().info(f"Fz: {Fz:.6f}, Tx: {Tx:.3f}, Ty: {Ty:.3f}, Tz: {Tz:.3f}")
 
